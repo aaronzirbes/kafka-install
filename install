@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 VERSION=0.8.2.0
 SCALA_VERSION=2.11
 MIRROR=http://mirrors.sonic.net
@@ -15,13 +17,13 @@ if [ ! -f /tmp/${TARBALL} ]; then
     curl ${DL_URL} > /tmp/${TARBALL}
 fi
 
-mkdir -p ${INSTALL_PATH}
+sudo mkdir -p ${INSTALL_PATH}
 
 pushd ${INSTALL_PATH}
 
 if [ ! -d ${INSTALL_DIR} ]; then
     echo "Extracting kafka to ${INSTALL_DIR}"
-    tar -xvzf /tmp/${TARBALL}
+    sudo tar -xvzf /tmp/${TARBALL}
 fi
 
 if ( ! grep -q "${INSTALL_DIR}/bin" ~/.bashrc ); then
