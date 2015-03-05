@@ -1,0 +1,32 @@
+#!/bin/bash
+
+VERSION=0.8.2.0
+SCALA_VERSION=2.11
+MIRROR=http://mirrors.sonic.net
+TARBALL=kafka-${VERSION}.tar.gz
+
+INSTALL_PATH=/usr/local/kafka
+INSTALL_DIR=${INSTALL_PATH}/kafka_${SCALA_VERSION}-${VERSION}
+
+DL_PATH=/apache/kafka/${VERSION}/kafka_${SCALA_VERSION}-${VERSION}.tgz
+DL_URL=${MIRROR}/${DL_PATH}
+if [ ! -f /tmp/${TARBALL} ]; then
+    echo "Downloading kafka"
+    curl ${DL_URL} > /tmp/${TARBALL}
+fi
+
+mkdir -p ${INSTALL_PATH}
+
+pushd ${INSTALL_PATH}
+
+if [ ! -d ${INSTALL_DIR} ]; then
+    echo "Extracting kafka to ${INSTALL_DIR}"
+    tar -xvzf /tmp/${TARBALL}
+fi
+
+if ( ! grep -q "${INSTALL_DIR}/bin" ~/.bashrc ); then
+    echo "Adding ${INSTALL_DIR}/bin to PATH in ~/.bashrc"
+    echo "export PATH=\"\${PATH}:${INSTALL_DIR}/bin\"" >> ~/.bashrc
+fi
+
+popd
